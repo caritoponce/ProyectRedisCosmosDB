@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 
+
 import java.util.Map;
 
 @RestController
@@ -33,8 +34,25 @@ public class UserController {
 
     @PostMapping("/user")
     public Mono<User> createUser(@RequestBody User user){
-        userRepository.save(user);
-      return userRepositoryCDB.save(user);
+       userRepository.save(user);
+       return userRepositoryCDB.save(user);
+
     }
+
+    @PutMapping("/user/{email}")
+    public Mono<User> updateUser(@PathVariable("email") String email,@RequestBody User userNew) {
+
+        Mono<User> userOld = userRepositoryCDB.findByEmail(email);
+        return userOld.flatMap(p -> {
+          p.setName(userNew.getName());
+          userRepository.update(p);
+          return userRepositoryCDB.save(p);
+        });
+    }
+//        Mono.just(userOld);
+//        userOld.setName(userNew.getName());
+//        userRepository.save(userOld);
+//       return userRepositoryCDB.save(userOld);
+
 
 }

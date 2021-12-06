@@ -38,7 +38,16 @@ public class UserRepository implements RedisRepository{
     }
 
     @Override
+    public User findByEmail(String email) {
+        return (User) hashOperations.get(KEY,email);
+    }
+
+    @Override
     public void save(User user) {
-       hashOperations.put(KEY, UUID.randomUUID().toString(), user);
+        hashOperations.put(KEY, user.getEmail(), user);
+    }
+
+    public void update(User user) {
+        hashOperations.put(KEY, user.getEmail(), user);
     }
 }

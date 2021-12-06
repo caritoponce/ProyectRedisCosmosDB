@@ -2,6 +2,8 @@ package com.example.exampleschedule.entity;
 
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
+import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
+import io.lettuce.core.dynamic.annotation.CommandNaming;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +14,6 @@ import java.io.Serializable;
 
 @Data
 @Container(containerName = "User")
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements Serializable {
@@ -22,7 +23,9 @@ public class User implements Serializable {
     @Id
     @GeneratedValue
     private String id;
+    @PartitionKey
     private String email;
+
     private String name;
 
 }
